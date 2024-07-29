@@ -1,0 +1,2 @@
+﻿agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone,agency_fare_url
+JP Subotica-trans,Public Company Subotica-trans,https://sutrans.rs,Europe/Belgrade,sr,+381 (0)24 555 566,https://sutrans.rs/Gradskih-Linija-cenovnik-111.html

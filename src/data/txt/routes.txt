@@ -1,0 +1,12 @@
+﻿route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color
+1A,JP Subotica-trans,1A,Kelebija Opština - Jadran -Bolnica - Novo Naselje,,3,,DB4436,FFFFFF
+2,JP Subotica-trans,2,Srpski Šor - Pačirski Put (KTC),,3,,009D57,FFFFFF
+3,JP Subotica-trans,3,Makova Sedmica - Lifka - Bajski Put,,3,,4186F0,FFFFFF
+4,JP Subotica-trans,4,Veliki Radanovac - Lifka,,3,,7C3592,FFFFFF
+8,JP Subotica-trans,8,Železničko Naselje - Lifka - Aleksandrovo,,3,,7CCFA9,000000
+8A,JP Subotica-trans,8A,Lifka - Jadran - Železničko Naselje,,3,,F4EB37,000000
+9,JP Subotica-trans,9,Srpski Šor - Hala Sportova - Sutrans - Sever,,3,,CDDC39,000000
+10,JP Subotica-trans,10,Palić Naselje - Radanovac - Lifka,,3,,CCCCCC,000000
+7,JP Subotica-trans,7,Lifka - Vikend Naselje,,3,,,
+6,JP Subotica-trans,6,Mali Bajmok - Palić - Vikend Naselje,,3,,F8971B,000000
+16,JP Subotica-trans,16,Teslino Naselje - Bolnica - Aleksandrovo,,3,,000000,FFFFFF

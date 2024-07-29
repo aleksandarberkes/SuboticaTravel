@@ -1,0 +1,10 @@
+﻿service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date
+radni_dan,1,1,1,1,1,0,0,20190601,20230531
+subota,0,0,0,0,0,1,0,20190601,20230531
+nedelja_i_praznici,0,0,0,0,0,0,1,20190601,20230531
+Školski_radni_dan,1,1,1,1,1,0,0,20190601,20230531
+Školski_subota,0,0,0,0,0,1,0,20190601,20230531
+Školski_nedelja_i_praznici,0,0,0,0,0,0,1,20190601,20230531
+Raspust_radni_dan,1,1,1,1,1,0,0,20220625,20220904
+Raspust_subota,0,0,0,0,0,1,0,20220625,20220904
+Raspust_nedelja_i_praznici,0,0,0,0,0,0,1,20220625,20220904

@@ -1,0 +1,4 @@
+fare_id,price,currency_type,payment_method,transfers,transfer_duration
+1,65,RSD,1,0,
+2,95,RSD,0,0,
+3,90,RSD,0,0,
