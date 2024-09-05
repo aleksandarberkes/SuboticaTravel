@@ -1,13 +1,19 @@
 import {View, Text, StyleSheet, TextInput, BackHandler} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SearchFilter from './SearchFilter';
-import {ServerContainerRef} from '@react-navigation/native';
+import {MarkerType, LaneType, UnivesalSeleceted} from '../assets/types';
 
 type SearchBarProps = {
   setMapScrollable: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedItem: UnivesalSeleceted;
+  setSelectedItem: React.Dispatch<React.SetStateAction<UnivesalSeleceted>>;
 };
 
-export default function SearchBar({setMapScrollable}: SearchBarProps) {
+export default function SearchBar({
+  setMapScrollable,
+  selectedItem,
+  setSelectedItem,
+}: SearchBarProps) {
   const [search, setSearch] = useState('');
   const [showAutoComplete, setShowAutoComplete] = useState(false);
 
@@ -28,6 +34,10 @@ export default function SearchBar({setMapScrollable}: SearchBarProps) {
     };
   }, [showAutoComplete]);
 
+  useEffect(() => {
+    if (selectedItem.selection_case === 'none') setSearch('');
+  }, [selectedItem]);
+
   return (
     <View style={styles.searchBar}>
       <TextInput
@@ -46,12 +56,22 @@ export default function SearchBar({setMapScrollable}: SearchBarProps) {
           setSearch(text);
         }}
         clearButtonMode="always"
+        onFocus={() => {
+          setMapScrollable(false);
+          setShowAutoComplete(true);
+        }}
         onBlur={() => {
           setMapScrollable(true);
           setShowAutoComplete(false);
         }}
       />
-      {showAutoComplete && <SearchFilter search={search} />}
+      {showAutoComplete && (
+        <SearchFilter
+          search={search}
+          setSelectedItem={setSelectedItem}
+          setSearch={setSearch}
+        />
+      )}
     </View>
   );
 }

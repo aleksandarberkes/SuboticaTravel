@@ -3,47 +3,37 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import SearchBar from '../components/SearchBar';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import Map from '../components/Map';
-import {TextInput} from 'react-native-gesture-handler';
-
-type MarkerType = {
-  stop_id: string;
-  stop_name: string;
-  route_ids: string[];
-  geometry: {
-    type: string;
-    coordinates: number[];
-  };
-};
-
-type LaneType = {
-  type: string;
-  properties: {
-    route_id: string;
-    route_name: string;
-  };
-  geometry: {
-    type: string;
-    coordinates: number[][][];
-  };
-};
+import {UnivesalSeleceted, MarkerType, LaneType} from '../assets/types';
 
 export default function MapScreen() {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['10%', '50%', '80%'], []);
-  const [selectedStop, setSelectedStop] = useState<MarkerType | null>(null);
-  const [selectedLane, setSelectedLane] = useState<LaneType | null>(null);
-  const [lastSelected, setLastSelected] = useState('');
   const [mapScrollable, setMapScrollable] = useState(true);
+
+  const [selectedItem, setSelectedItem] = useState<UnivesalSeleceted>({
+    selection_case: 'none',
+  });
 
   //TODO: marker back handler
 
   const renderInfo = () => {
-    if (lastSelected === 'marker' && selectedStop)
+    return (
+      <View>
+        <Text>
+          {selectedItem.marker_info !== undefined
+            ? selectedItem.marker_info?.properties.stop_name
+            : selectedItem.lane_info &&
+              selectedItem.lane_info[0].properties.route_name}
+        </Text>
+      </View>
+    );
+
+    /*if (lastSelected === 'marker' && selectedStop)
       return (
         <View>
-          <Text>Stop Name: {selectedStop.stop_name}</Text>
-          <Text>Stop ID: {selectedStop.stop_id}</Text>
-          <Text>Route IDs: {selectedStop.route_ids.join(', ')}</Text>
+          <Text>Stop Name: {selectedItem.}</Text>
+          <Text>Stop ID: {selectedStop.properties.stop_id}</Text>
+          <Text>Route IDs: {selectedStop.properties.route_ids.join(', ')}</Text>
           <Text>Latitude: {selectedStop.geometry.coordinates[1]}</Text>
           <Text>Longitude: {selectedStop.geometry.coordinates[0]}</Text>
         </View>
@@ -54,21 +44,24 @@ export default function MapScreen() {
           <Text>Lane Name: {selectedLane.properties.route_name}</Text>
           <Text>Lane ID: {selectedLane.properties.route_id}</Text>
         </View>
-      );
+      );*/
   };
 
   return (
     <View>
       <View style={styles.floating}>
-        <SearchBar setMapScrollable={setMapScrollable} />
+        <SearchBar
+          setMapScrollable={setMapScrollable}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
+        />
       </View>
 
       <Map
         bottomSheet={bottomSheetRef}
-        setSelectedStop={setSelectedStop}
-        setSelectedLane={setSelectedLane}
-        setLastSelected={setLastSelected}
         mapScrollable={mapScrollable}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
       />
 
       <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>

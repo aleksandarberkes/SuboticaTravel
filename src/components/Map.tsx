@@ -4,79 +4,63 @@ import MapView, {Marker, Polyline} from 'react-native-maps';
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
 import mapStyle from '../assets/mapStyle.json';
 import {markersGeoJSON, linesGeoJSON} from '../data/data';
-
-type MarkerType = {
-  stop_id: string;
-  stop_name: string;
-  route_ids: string[];
-  geometry: {
-    type: string;
-    coordinates: number[];
-  };
-};
-
-type LaneType = {
-  type: string;
-  properties: {
-    route_id: string;
-    route_name: string;
-  };
-  geometry: {
-    type: string;
-    coordinates: number[][][];
-  };
-};
+import {UnivesalSeleceted, MarkerType, LaneType} from '../assets/types';
 
 type MapProps = {
   bottomSheet: React.RefObject<BottomSheet>;
-  setSelectedStop: React.Dispatch<React.SetStateAction<MarkerType | null>>;
-  setSelectedLane: React.Dispatch<React.SetStateAction<LaneType | null>>;
-  setLastSelected: React.Dispatch<React.SetStateAction<string>>;
   mapScrollable: boolean;
+  selectedItem: UnivesalSeleceted;
+  setSelectedItem: React.Dispatch<React.SetStateAction<UnivesalSeleceted>>;
 };
 
 export default function Map({
   bottomSheet,
-  setSelectedStop,
-  setSelectedLane,
-  setLastSelected,
   mapScrollable,
+  selectedItem,
+  setSelectedItem,
 }: MapProps) {
-  const [displayLane, setDisplayLane] = useState('none');
-
-  const laneColors = [
-    'red',
-    'green',
-    'blue',
-    'yellow',
-    'purple',
-    'pink',
-    'lime',
-    'white',
-  ];
-
-  const getLaneColor = (lane: string, index: number) => {
+  const getLaneColor = (lane: string) => {
     switch (lane) {
-      case '3':
-        return 'blue';
       case '1A':
         return 'gray';
-      case '16':
+      case '2':
+        return 'darkred';
+      case '3':
+        return 'blue';
+      case '4':
         return 'yellow';
+      case '6':
+        return 'green';
+      case '7':
+        return 'black';
+      case '8':
+        return 'burlywood';
+      case '8A':
+        return 'pink';
+      case '9':
+        return 'darkcyan';
+      case '10':
+        return 'darkslateblue';
+      case '16':
+        return 'darkgoldenrod';
       default:
-        return laneColors[index % laneColors.length];
+        return 'black';
     }
   };
 
   //back button behavior when selected lane
   useEffect(() => {
     const onBackPress = () => {
-      if (displayLane !== 'none') {
-        setDisplayLane('none');
+      if (selectedItem.selection_case !== 'none') {
         bottomSheet.current?.collapse();
-        return true; // Prevent default behavior (e.g., closing the app)
+        setSelectedItem({
+          selection_case: 'none',
+          lane_info: undefined,
+          marker_info: undefined,
+        });
+        return true;
       }
-      return false; // Allow default behavior if displayLane is 'none'
+      return false;
     };
 
     BackHandler.addEventListener('hardwareBackPress', onBackPress);
@@ -84,27 +68,82 @@ export default function Map({
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', onBackPress);
     };
-  }, [displayLane]);
+  }, [selectedItem]);
 
-  const handleRoutePress = (marker: MarkerType) => {
+  const handleRoutePress = (lane: LaneType, marker: MarkerType) => {
     bottomSheet.current?.snapToIndex(1);
-    setSelectedStop(marker);
-    setLastSelected('marker');
+    if (selectedItem.selection_case !== 'filter-marker')
+      setSelectedItem({
+        selection_case: 'map-marker',
+        lane_info: [lane],
+        marker_info: marker,
+      });
   };
 
   const handleLanePress = (lane: LaneType) => {
-    setDisplayLane(lane.properties.route_name);
     bottomSheet.current?.snapToIndex(1);
-    setSelectedLane(lane);
-    setLastSelected('lane');
+    setSelectedItem({selection_case: 'map-lane', lane_info: [lane]});
+  };
+
+  const renderMarkers = (feature: LaneType) => {
+    if (
+      selectedItem.selection_case === 'map-lane' ||
+      selectedItem.selection_case === 'map-marker' ||
+      selectedItem.selection_case === 'filter-lane'
+    ) {
+      return markersGeoJSON.features.map((markerFeature, index) => {
+        if (
+          selectedItem.selection_case !== 'none' &&
+          markerFeature.properties.route_ids.includes(
+            feature.properties.route_id,
+          )
+        ) {
+          console.log('marker route name;' + feature.properties.route_name);
+          return (
+            <Marker
+              pinColor={getLaneColor(feature.properties.route_name)}
+              key={index}
+              coordinate={{
+                latitude: markerFeature.geometry.coordinates[1],
+                longitude: markerFeature.geometry.coordinates[0],
+              }}
+              title={markerFeature.properties.stop_name}
+              description={`Routes: ${markerFeature.properties.route_ids}`}
+              onPress={() => handleRoutePress(feature, markerFeature)}
+            />
+          );
+        }
+      });
+    } else if (selectedItem.marker_info) {
+      return (
+        <Marker
+          pinColor={'blue'}
+          key={0}
+          coordinate={{
+            latitude: selectedItem.marker_info.geometry.coordinates[1],
+            longitude: selectedItem.marker_info.geometry.coordinates[0],
+          }}
+          title={selectedItem.marker_info.properties.stop_name}
+          description={`Routes: ${selectedItem.marker_info.properties.route_ids}`}
+          onPress={() => {
+            selectedItem.marker_info &&
+              handleRoutePress(feature, selectedItem.marker_info);
+          }}
+        />
+      );
+    }
   };
 
   const renderLanes = () => {
     return linesGeoJSON.features.map((feature, index) =>
       feature.geometry.coordinates.map((line, lineIndex) => {
+        const isRouteNameIncluded = selectedItem.lane_info?.some(
+          (lane: LaneType) =>
+            lane.properties.route_name === feature.properties.route_name,
+        );
         if (
-          displayLane === feature.properties.route_name ||
-          displayLane === 'none'
+          selectedItem.selection_case === 'none' ||
+          (selectedItem.lane_info && isRouteNameIncluded)
         )
           return (
             <>
@@ -115,41 +154,11 @@ export default function Map({
                   latitude: coord[1],
                   longitude: coord[0],
                 }))}
-                strokeColor={getLaneColor(feature.properties.route_name, index)}
+                strokeColor={getLaneColor(feature.properties.route_name)}
                 strokeWidth={5}
                 onPress={() => handleLanePress(feature)}
               />
-              {markersGeoJSON.features.map((markerFeature, index) => {
-                if (
-                  markerFeature.properties.route_ids.includes(
-                    feature.properties.route_id,
-                  ) &&
-                  displayLane !== 'none'
-                )
-                  return (
-                    <Marker
-                      pinColor={getLaneColor(
-                        feature.properties.route_name,
-                        index,
-                      )}
-                      key={index}
-                      coordinate={{
-                        latitude: markerFeature.geometry.coordinates[1],
-                        longitude: markerFeature.geometry.coordinates[0],
-                      }}
-                      title={markerFeature.properties.stop_name}
-                      description={`Stop ID: ${feature}`}
-                      onPress={() =>
-                        handleRoutePress({
-                          stop_id: markerFeature.properties.stop_id,
-                          stop_name: markerFeature.properties.stop_name,
-                          route_ids: markerFeature.properties.route_ids,
-                          geometry: markerFeature.geometry,
-                        })
-                      }
-                    />
-                  );
-              })}
+              {renderMarkers(feature)}
             </>
           );
       }),
