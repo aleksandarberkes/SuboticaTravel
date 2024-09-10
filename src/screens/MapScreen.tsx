@@ -4,10 +4,10 @@ import SearchBar from '../components/SearchBar';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import Map from '../components/Map';
 import {UnivesalSeleceted, MarkerType, LaneType} from '../assets/types';
+import BottomSheetComponent from '../components/BottomSheetComponent';
 
 export default function MapScreen() {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['10%', '50%', '80%'], []);
   const [mapScrollable, setMapScrollable] = useState(true);
 
   const [selectedItem, setSelectedItem] = useState<UnivesalSeleceted>({
@@ -64,11 +64,10 @@ export default function MapScreen() {
         setSelectedItem={setSelectedItem}
       />
 
-      <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
-        <BottomSheetView style={styles.contentContainer}>
-          {renderInfo()}
-        </BottomSheetView>
-      </BottomSheet>
+      <BottomSheetComponent
+        bottomSheetRef={bottomSheetRef}
+        selectedItem={selectedItem}
+      />
     </View>
   );
 }
@@ -83,11 +82,5 @@ const styles = StyleSheet.create({
     top: 30,
 
     zIndex: 10,
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: 'center',
-    overflow: 'visible',
-    position: 'relative',
   },
 });

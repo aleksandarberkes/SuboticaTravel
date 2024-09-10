@@ -19,6 +19,7 @@ export default function Map({
   selectedItem,
   setSelectedItem,
 }: MapProps) {
+  //geting the particular lanes color
   const getLaneColor = (lane: string) => {
     switch (lane) {
       case '1A':
@@ -98,7 +99,6 @@ export default function Map({
             feature.properties.route_id,
           )
         ) {
-          console.log('marker route name;' + feature.properties.route_name);
           return (
             <Marker
               pinColor={getLaneColor(feature.properties.route_name)}

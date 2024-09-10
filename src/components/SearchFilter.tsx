@@ -52,7 +52,8 @@ export default function SearchFilter(props: SearchFilterProps) {
             return (
               <TouchableOpacity
                 activeOpacity={0.9}
-                onPress={() => handleLanePress(feature)}>
+                onPress={() => handleLanePress(feature)}
+                style={styles.searchOption}>
                 <Text>{feature.properties.route_name}</Text>
               </TouchableOpacity>
             );
@@ -66,15 +67,13 @@ export default function SearchFilter(props: SearchFilterProps) {
             return (
               <TouchableOpacity
                 activeOpacity={0.9}
-                onPress={() => handleMarkerPress(feature)}>
-                <Text>
-                  {feature.properties.stop_name} {feature.properties.route_ids}{' '}
-                </Text>
+                onPress={() => handleMarkerPress(feature)}
+                style={styles.searchOption}>
+                <Text>{feature.properties.stop_name}</Text>
               </TouchableOpacity>
             );
         })}
       </ScrollView>
-      <View style={styles.mapScroll}></View>
     </>
   );
 }
@@ -89,12 +88,8 @@ const styles = StyleSheet.create({
     top: 50,
     zIndex: 10,
   },
-  mapScroll: {
-    display: 'none',
-    height: 1000,
-    width: 1000,
-    left: -100,
-    top: -100,
-    backgroundColor: 'yellow',
+  searchOption: {
+    paddingVertical: 5,
+    paddingHorizontal: 20,
   },
 });

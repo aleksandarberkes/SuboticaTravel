@@ -1,0 +1,100 @@
+1A:
+    Linija_1A_Smer_A_radni_dan_
+    Linija_1A_Smer_A_radni_dan_M_
+    Linija_1A_Smer_A_radni_dan_J_
+
+    Linija_1A_Smer_B_radni_dan_
+    Linija_1A_Smer_B_radni_dan_J_
+    Linija_1A_Smer_B_radni_dan_M_
+
+    isti(vieknd i praznici):
+        Linija_1A_Smer_A_subota_
+        Linija_1A_Smer_A_subota_M_
+        Linija_1A_Smer_A_subota_J_
+
+        Linija_1A_Smer_B_subota_
+        Linija_1A_Smer_B_subota_J_
+        Linija_1A_Smer_B_subota_M_
+    /
+        Linija_1A_Smer_A_nedelja_i_praznici_
+        Linija_1A_Smer_A_nedelja_i_praznici_M_
+        Linija_1A_Smer_A_nedelja_i_praznici_J_
+
+        Linija_1A_Smer_B_nedelja_i_praznici_
+        Linija_1A_Smer_B_nedelja_i_praznici_M_
+        Linija_1A_Smer_B_nedelja_i_praznici_J_
+
+2:
+    Linija_2_Smer_A_radni_dan_
+    Linija_2_Smer_A_radni_dan_M_
+    Linija_2_Smer_A_radni_dan_J_
+
+    Linija_2_Smer_B_radni_dan_
+    Linija_2_Smer_B_radni_dan_J_
+    Linija_2_Smer_B_radni_dan_M_
+
+    isti(vieknd i praznici):
+        Linija_2_Smer_A_subota_
+
+        Linija_2_Smer_B_subota_
+        Linija_2_Smer_B_subota_J_
+        Linija_2_Smer_B_subota_M_
+    /
+        Linija_2_Smer_A_nedelja_i_praznici_
+
+        Linija_2_Smer_B_nedelja_i_praznici_
+        Linija_2_Smer_B_nedelja_i_praznici_J_
+        Linija_2_Smer_B_nedelja_i_praznici_M_
+
+3:
+    Linija_3_Smer_A_Školski_radni_dan_
+    Linija_3_Smer_A_Od_Patrija_Školski_radni_dan_
+    Linija_3_Smer_A_Do_Lifka_Školski_radni_dan_
+    Linija_3_Smer_A_Do_Radio_Subotica_Školski_radni_dan_
+    Linija_3_Smer_A_Raspust_radni_dan_ 
+    Linija_3_Smer_A_Do_Lifka_Raspust_radni_dan_
+
+    Linija_3_Smer_B_Školski_radni_dan_
+    Linija_3_Smer_B_Do_Nova_Opština_Školski_radni_dan_
+    Linija_3_Smer_B_Od_Lifka_Školski_radni_dan_
+    Linija_3_Smer_B_Od_Radio_Subotica_Školski_radni_dan_
+    Linija_3_Smer_B_Raspust_radni_dan_
+    Linija_3_Smer_B_Do_Nova_Opština_Raspust_radni_dan_
+    Linija_3_Smer_B_Od_Radio_Subotica_Raspust_radni_dan_
+
+    Linija_3_Smer_A_Školski_subota_
+    Linija_3_Smer_A_Do_Radio_Subotica_Školski_subota_
+    Linija_3_Smer_B_Školski_subota_
+    Linija_3_Smer_B_Od_Radio_Subotica_Školski_subota_
+
+    Linija_3_Smer_A_Raspust_subota_
+    Linija_3_Smer_A_Do_Radio_Subotica_Raspust_subota_
+    Linija_3_Smer_B_Raspust_subota_
+    Linija_3_Smer_B_Od_Radio_Subotica_Raspust_subota_
+
+    Linija_3_Smer_A_Školski_nedelja_i_praznici_
+    Linija_3_Smer_A_Do_Radio_Subotica_Školski_nedelja_i_praznici_
+
+    Linija_3_Smer_B_Školski_nedelja_i_praznici_
+    Linija_3_Smer_B_Od_Radio_Subotica_Školski_nedelja_i_praznici_
+
+    Linija_3_Smer_A_Raspust_nedelja_i_praznici_
+    Linija_3_Smer_A_Do_Radio_Subotica_Raspust_nedelja_i_praznici_
+
+    Linija_3_Smer_B_Raspust_nedelja_i_praznici_
+    Linija_3_Smer_B_Od_Radio_Subotica_Raspust_nedelja_i_praznici_
+
+4:
+    Linija_4_Smer_A_radni_dan_
+    Linija_4_Smer_A_Do_Subotica_-_Trans_radni_dan_
+
+    Linija_4_Smer_B_radni_dan_
+
+    isti(vieknd i praznici): 
+        Linija_4_Smer_A_subota_
+
+        Linija_4_Smer_B_subota_
+    /
+        Linija_4_Smer_A_nedelja_i_praznici_
+
+        Linija_4_Smer_B_nedelja_i_praznici_
