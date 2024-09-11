@@ -5,6 +5,7 @@ import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import Map from '../components/Map';
 import {UnivesalSeleceted, MarkerType, LaneType} from '../assets/types';
 import BottomSheetComponent from '../components/BottomSheetComponent';
+import MapLegend from '../components/MapLegend';
 
 export default function MapScreen() {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -57,6 +58,7 @@ export default function MapScreen() {
         />
       </View>
 
+      {selectedItem.selection_case === 'none' && <MapLegend />}
       <Map
         bottomSheet={bottomSheetRef}
         mapScrollable={mapScrollable}
@@ -77,10 +79,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     width: '100%',
-
     position: 'absolute',
     top: 30,
-
-    zIndex: 10,
+    zIndex: 11,
   },
 });

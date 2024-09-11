@@ -71,7 +71,7 @@ export default function Map({
     };
   }, [selectedItem]);
 
-  const handleRoutePress = (lane: LaneType, marker: MarkerType) => {
+  const handleStopPress = (lane: LaneType, marker: MarkerType) => {
     bottomSheet.current?.snapToIndex(1);
     if (selectedItem.selection_case !== 'filter-marker')
       setSelectedItem({
@@ -101,7 +101,7 @@ export default function Map({
         ) {
           return (
             <Marker
-              pinColor={getLaneColor(feature.properties.route_name)}
+              pinColor={getLaneColor(feature.properties.route_id)}
               key={index}
               coordinate={{
                 latitude: markerFeature.geometry.coordinates[1],
@@ -109,15 +109,15 @@ export default function Map({
               }}
               title={markerFeature.properties.stop_name}
               description={`Routes: ${markerFeature.properties.route_ids}`}
-              onPress={() => handleRoutePress(feature, markerFeature)}
+              onPress={() => handleStopPress(feature, markerFeature)}
             />
           );
         }
       });
-    } else if (selectedItem.marker_info) {
+    } else if (selectedItem.marker_info && selectedItem.lane_info) {
       return (
         <Marker
-          pinColor={'blue'}
+          pinColor={getLaneColor(selectedItem.lane_info[0].properties.route_id)}
           key={0}
           coordinate={{
             latitude: selectedItem.marker_info.geometry.coordinates[1],
@@ -127,7 +127,7 @@ export default function Map({
           description={`Routes: ${selectedItem.marker_info.properties.route_ids}`}
           onPress={() => {
             selectedItem.marker_info &&
-              handleRoutePress(feature, selectedItem.marker_info);
+              handleStopPress(feature, selectedItem.marker_info);
           }}
         />
       );

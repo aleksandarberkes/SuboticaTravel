@@ -184,52 +184,47 @@ export default function BottomSheetComponent({
                 );
               },
             )}
+            <Text style={styles.displayText}>Vremena za vikend i praznike</Text>
+            {selectedItem.marker_info.properties.route_ids.map(
+              (elm, indexRoute) => {
+                let counter: number = 0;
+                return (
+                  <>
+                    <Text style={styles.displayText}>{elm}</Text>
+                    {busArivalData.map((element, index) => {
+                      const timeB = new Date(
+                        `1970-01-01T${busArivalData[index][1]}Z`,
+                      );
+                      if (
+                        busArivalData[index][3] ===
+                          selectedItem.marker_info?.properties.stop_id &&
+                        busArivalData[index][0]
+                          .split('_')
+                          .includes('nedelja') &&
+                        busArivalData[index][0]
+                          .split('_')
+                          .includes(
+                            selectedItem.marker_info.properties.route_ids[
+                              indexRoute
+                            ],
+                          ) &&
+                        timeA.getTime() < timeB.getTime() &&
+                        counter < 5
+                      ) {
+                        counter++;
+                        return (
+                          <Text style={styles.displayText}>
+                            {'Dolazak: ' + busArivalData[index][1] + '\n'}
+                          </Text>
+                        );
+                      }
+                    })}
+                  </>
+                );
+              },
+            )}
           </>
         );
-        //   return (
-        //     <>
-        //       <Text style={styles.displayText}>Vremena za radne dane</Text>
-        //       <Text style={styles.displayText}>
-        //         {busArivalData.map((element, index) => {
-        //           if (
-        //             busArivalData[index][3] ===
-        //               selectedItem.marker_info?.properties.stop_id &&
-        //             busArivalData[index][0].split('_').includes('radni')
-        //           ) {
-        //             return (
-        //               'route - ' +
-        //               busArivalData[index][0].split('_')[1] +
-        //               '\t\t\t' +
-        //               'arives - ' +
-        //               busArivalData[index][1] +
-        //               '\n'
-        //             );
-        //           }
-        //         })}
-        //       </Text>
-        //       <Text style={styles.displayText}>Vremena za vikend</Text>
-        //       <Text style={styles.displayText}>
-        //         {busArivalData.map((element, index) => {
-        //           if (
-        //             busArivalData[index][3] ===
-        //               selectedItem.marker_info?.properties.stop_id &&
-        //             busArivalData[index][0].split('_').includes('nedelja')
-        //           ) {
-        //             return (
-        //               'route - ' +
-        //               busArivalData[index][0].split('_')[1] +
-        //               '\t\t\t' +
-        //               'arives - ' +
-        //               busArivalData[index][1] +
-        //               '\n'
-        //             );
-        //           }
-        //         })}
-        //       </Text>
-        //     </>
-        //   );
-        // }
-        return null;
       }
     };
 
@@ -246,11 +241,33 @@ export default function BottomSheetComponent({
       </View>
     );
   };
+  const renderWelcome = () => {
+    return (
+      <View>
+        <Text style={styles.headerText}>Dobro dosli</Text>
+        <Text style={[styles.displayText, {padding: 20}]}>
+          Dobrodošli u Subotica Travel, vašu praktičnu aplikaciju za navigaciju
+          gradskim autobuskim prevozom. Bilo da svakodnevno putujete ili ste
+          prvi put u Subotici, naša aplikacija vam pomaže da isplanirate svoje
+          putovanje sa aktuelnim redom vožnje, mapama ruta i informacijama o
+          cenama, omogućavajući vam da putujete jednostavno i efikasno.
+        </Text>
+        <Text style={[styles.displayText, {padding: 20}]}>
+          Ostanite informisani uz ažurirane dolaske autobusa, obaveštenja o
+          uslugama i najbolje opcije ruta prilagođene vašoj destinaciji. Sa
+          lakim za korišćenje funkcijama i tačnim podacima, Subotica Travel čini
+          putovanje autobusom u Subotici bezbrižnim i pouzdanim. Srećan put!
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
       <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
-        {renderInfo()}
+        {selectedItem.selection_case === 'none'
+          ? renderWelcome()
+          : renderInfo()}
       </BottomSheetScrollView>
     </BottomSheet>
   );
