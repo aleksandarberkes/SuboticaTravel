@@ -139,6 +139,100 @@ export default function BottomSheetComponent({
       return null;
     };
 
+    const renderMarkerInfo = () => {
+      const currentTime = new Date().toTimeString().split(' ')[0];
+      const timeA = new Date(`1970-01-01T${currentTime}Z`);
+      console.log(timeA);
+
+      if (selectedItem.marker_info) {
+        return (
+          <>
+            <Text style={styles.displayText}>Vremena za radne dane</Text>
+            {selectedItem.marker_info.properties.route_ids.map(
+              (elm, indexRoute) => {
+                let counter: number = 0;
+                return (
+                  <>
+                    <Text style={styles.displayText}>{elm}</Text>
+                    {busArivalData.map((element, index) => {
+                      const timeB = new Date(
+                        `1970-01-01T${busArivalData[index][1]}Z`,
+                      );
+                      if (
+                        busArivalData[index][3] ===
+                          selectedItem.marker_info?.properties.stop_id &&
+                        busArivalData[index][0].split('_').includes('radni') &&
+                        busArivalData[index][0]
+                          .split('_')
+                          .includes(
+                            selectedItem.marker_info.properties.route_ids[
+                              indexRoute
+                            ],
+                          ) &&
+                        timeA.getTime() < timeB.getTime() &&
+                        counter < 5
+                      ) {
+                        counter++;
+                        return (
+                          <Text style={styles.displayText}>
+                            {'Dolazak: ' + busArivalData[index][1] + '\n'}
+                          </Text>
+                        );
+                      }
+                    })}
+                  </>
+                );
+              },
+            )}
+          </>
+        );
+        //   return (
+        //     <>
+        //       <Text style={styles.displayText}>Vremena za radne dane</Text>
+        //       <Text style={styles.displayText}>
+        //         {busArivalData.map((element, index) => {
+        //           if (
+        //             busArivalData[index][3] ===
+        //               selectedItem.marker_info?.properties.stop_id &&
+        //             busArivalData[index][0].split('_').includes('radni')
+        //           ) {
+        //             return (
+        //               'route - ' +
+        //               busArivalData[index][0].split('_')[1] +
+        //               '\t\t\t' +
+        //               'arives - ' +
+        //               busArivalData[index][1] +
+        //               '\n'
+        //             );
+        //           }
+        //         })}
+        //       </Text>
+        //       <Text style={styles.displayText}>Vremena za vikend</Text>
+        //       <Text style={styles.displayText}>
+        //         {busArivalData.map((element, index) => {
+        //           if (
+        //             busArivalData[index][3] ===
+        //               selectedItem.marker_info?.properties.stop_id &&
+        //             busArivalData[index][0].split('_').includes('nedelja')
+        //           ) {
+        //             return (
+        //               'route - ' +
+        //               busArivalData[index][0].split('_')[1] +
+        //               '\t\t\t' +
+        //               'arives - ' +
+        //               busArivalData[index][1] +
+        //               '\n'
+        //             );
+        //           }
+        //         })}
+        //       </Text>
+        //     </>
+        //   );
+        // }
+        return null;
+      }
+    };
+
     return (
       <View style={styles.container}>
         <Text style={styles.headerText}>
@@ -147,48 +241,7 @@ export default function BottomSheetComponent({
             : selectedItem.lane_info &&
               selectedItem.lane_info[0].properties.route_name}
         </Text>
-        {selectedItem.marker_info && (
-          <>
-            <Text style={styles.displayText}>Vremena za radne dane</Text>
-            <Text style={styles.displayText}>
-              {busArivalData.map((element, index) => {
-                if (
-                  busArivalData[index][3] ===
-                    selectedItem.marker_info?.properties.stop_id &&
-                  busArivalData[index][0].split('_').includes('radni')
-                ) {
-                  return (
-                    'route - ' +
-                    busArivalData[index][0].split('_')[1] +
-                    '\t\t\t' +
-                    'arives - ' +
-                    busArivalData[index][1] +
-                    '\n'
-                  );
-                }
-              })}
-            </Text>
-            <Text style={styles.displayText}>Vremena za vikend</Text>
-            <Text style={styles.displayText}>
-              {busArivalData.map((element, index) => {
-                if (
-                  busArivalData[index][3] ===
-                    selectedItem.marker_info?.properties.stop_id &&
-                  busArivalData[index][0].split('_').includes('nedelja')
-                ) {
-                  return (
-                    'route - ' +
-                    busArivalData[index][0].split('_')[1] +
-                    '\t\t\t' +
-                    'arives - ' +
-                    busArivalData[index][1] +
-                    '\n'
-                  );
-                }
-              })}
-            </Text>
-          </>
-        )}
+        {renderMarkerInfo()}
         {renderLaneInfo()}
       </View>
     );
