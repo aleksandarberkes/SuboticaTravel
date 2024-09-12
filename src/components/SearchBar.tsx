@@ -43,6 +43,7 @@ export default function SearchBar({
       <TextInput
         style={styles.input}
         placeholder="Trazite stanice i linije"
+        placeholderTextColor={'gray'}
         value={search}
         onChangeText={text => {
           if (text === '') {
@@ -97,5 +98,6 @@ const styles = StyleSheet.create({
   searchIcon: {},
   input: {
     flex: 1,
+    color: 'gray',
   },
 });

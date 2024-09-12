@@ -47,7 +47,7 @@ export default function BottomSheetComponent({
         ((selectedDireciton === 'odlazak' && busArivalSplit.includes('A')) ||
           (selectedDireciton === 'dolazak' && busArivalSplit.includes('B'))) && //check for direction
         busArivalSplit.includes(day === 'radni' ? 'radni' : 'nedelja') && //checks if is work day
-        tripRepeat !== tripId && //checks if its first time of teh trip
+        tripRepeat !== tripId && //checks if its first time of the trip
         busArivalSplit.includes(selectedItem.lane_info[0].properties.route_name) // checks if its the selected lane
       ) {
         tripRepeat = tripId;
@@ -146,14 +146,16 @@ export default function BottomSheetComponent({
 
       if (selectedItem.marker_info) {
         return (
-          <>
-            <Text style={styles.displayText}>Vremena za radne dane</Text>
+          <View style={styles.departureTimesContainer}>
+            <Text style={styles.headerText}>Vremena za radne dane</Text>
             {selectedItem.marker_info.properties.route_ids.map(
               (elm, indexRoute) => {
                 let counter: number = 0;
                 return (
-                  <>
-                    <Text style={styles.displayText}>{elm}</Text>
+                  <View style={styles.routeContianer}>
+                    <Text style={styles.displayRouteNameText}>
+                      {'Linija ' + elm}
+                    </Text>
                     {busArivalData.map((element, index) => {
                       const timeB = new Date(
                         `1970-01-01T${busArivalData[index][1]}Z`,
@@ -174,23 +176,28 @@ export default function BottomSheetComponent({
                       ) {
                         counter++;
                         return (
-                          <Text style={styles.displayText}>
-                            {'Dolazak: ' + busArivalData[index][1] + '\n'}
+                          <Text style={styles.busArivalText}>
+                            {busArivalData[index][1].split(':')[0] +
+                              ':' +
+                              busArivalData[index][1].split(':')[1] +
+                              '\n'}
                           </Text>
                         );
                       }
                     })}
-                  </>
+                  </View>
                 );
               },
             )}
-            <Text style={styles.displayText}>Vremena za vikend i praznike</Text>
+            <Text style={styles.headerText}>Vremena za vikend i praznike</Text>
             {selectedItem.marker_info.properties.route_ids.map(
               (elm, indexRoute) => {
                 let counter: number = 0;
                 return (
-                  <>
-                    <Text style={styles.displayText}>{elm}</Text>
+                  <View style={styles.routeContianer}>
+                    <Text style={styles.displayRouteNameText}>
+                      {'Linija ' + elm}
+                    </Text>
                     {busArivalData.map((element, index) => {
                       const timeB = new Date(
                         `1970-01-01T${busArivalData[index][1]}Z`,
@@ -213,17 +220,17 @@ export default function BottomSheetComponent({
                       ) {
                         counter++;
                         return (
-                          <Text style={styles.displayText}>
-                            {'Dolazak: ' + busArivalData[index][1] + '\n'}
+                          <Text style={styles.busArivalText}>
+                            {busArivalData[index][1] + '\n'}
                           </Text>
                         );
                       }
                     })}
-                  </>
+                  </View>
                 );
               },
             )}
-          </>
+          </View>
         );
       }
     };
@@ -241,6 +248,7 @@ export default function BottomSheetComponent({
       </View>
     );
   };
+
   const renderWelcome = () => {
     return (
       <View>
@@ -313,8 +321,21 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
-    color: 'gray',
+    color: 'darkslategrey',
     alignSelf: 'center',
     marginTop: 10,
+  },
+  displayRouteNameText: {
+    fontSize: 22,
+    color: 'darkslategrey',
+  },
+  routeContianer: {
+    backgroundColor: 'lightgray',
+    marginVertical: 10,
+    paddingVertical: 10,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'darkgrey',
+    paddingLeft: 20,
   },
 });

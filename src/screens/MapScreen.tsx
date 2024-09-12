@@ -6,6 +6,7 @@ import Map from '../components/Map';
 import {UnivesalSeleceted, MarkerType, LaneType} from '../assets/types';
 import BottomSheetComponent from '../components/BottomSheetComponent';
 import MapLegend from '../components/MapLegend';
+import OptionPicker from '../components/OptionPicker';
 
 export default function MapScreen() {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -59,6 +60,7 @@ export default function MapScreen() {
       </View>
 
       {selectedItem.selection_case === 'none' && <MapLegend />}
+      <OptionPicker />
       <Map
         bottomSheet={bottomSheetRef}
         mapScrollable={mapScrollable}
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
   floating: {
     flex: 1,
     alignItems: 'center',
-    width: '100%',
+    width: '85%',
     position: 'absolute',
     top: 30,
     zIndex: 11,

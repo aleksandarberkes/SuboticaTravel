@@ -54,7 +54,9 @@ export default function SearchFilter(props: SearchFilterProps) {
                 activeOpacity={0.9}
                 onPress={() => handleLanePress(feature)}
                 style={styles.searchOption}>
-                <Text>{feature.properties.route_name}</Text>
+                <Text style={styles.displayText}>
+                  {feature.properties.route_name}
+                </Text>
               </TouchableOpacity>
             );
         })}
@@ -69,7 +71,9 @@ export default function SearchFilter(props: SearchFilterProps) {
                 activeOpacity={0.9}
                 onPress={() => handleMarkerPress(feature)}
                 style={styles.searchOption}>
-                <Text>{feature.properties.stop_name}</Text>
+                <Text style={styles.displayText}>
+                  {feature.properties.stop_name}
+                </Text>
               </TouchableOpacity>
             );
         })}
@@ -91,5 +95,8 @@ const styles = StyleSheet.create({
   searchOption: {
     paddingVertical: 5,
     paddingHorizontal: 20,
+  },
+  displayText: {
+    color: 'gray',
   },
 });
