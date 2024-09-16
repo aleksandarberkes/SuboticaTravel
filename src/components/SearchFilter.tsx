@@ -86,11 +86,13 @@ const styles = StyleSheet.create({
   searchAutoComplete: {
     overflow: 'hidden',
     backgroundColor: 'white',
-    height: 300,
+    height: 200,
     width: '100%',
     position: 'absolute',
     top: 50,
-    zIndex: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'lightgray',
   },
   searchOption: {
     paddingVertical: 5,

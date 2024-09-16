@@ -59,7 +59,7 @@ export default function MapScreen() {
         />
       </View>
 
-      {selectedItem.selection_case === 'none' && <MapLegend />}
+      <MapLegend />
       <OptionPicker />
       <Map
         bottomSheet={bottomSheetRef}
@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
     width: '85%',
     position: 'absolute',
     top: 30,
-    zIndex: 11,
+    zIndex: 1,
   },
 });
