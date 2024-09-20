@@ -9,6 +9,7 @@ type SearchFilterProps = {
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   setSelectedItem: React.Dispatch<React.SetStateAction<UnivesalSeleceted>>;
+  goToLocation: (lat: number, lng: number) => void;
 };
 
 export default function SearchFilter(props: SearchFilterProps) {
@@ -30,6 +31,10 @@ export default function SearchFilter(props: SearchFilterProps) {
       marker_info: feature,
     });
     props.setSearch(feature.properties.stop_name);
+    props.goToLocation(
+      feature.geometry.coordinates[1],
+      feature.geometry.coordinates[0],
+    );
   };
 
   const handleLanePress = (feature: LaneType) => {

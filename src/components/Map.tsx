@@ -172,6 +172,10 @@ export default function Map({
   return (
     <MapView
       ref={mapRef}
+      rotateEnabled={false}
+      showsMyLocationButton={false}
+      showsCompass={false}
+      loadingEnabled={true}
       showsUserLocation={true}
       style={styles.map}
       customMapStyle={mapStyle}

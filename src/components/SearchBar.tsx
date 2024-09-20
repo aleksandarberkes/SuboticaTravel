@@ -7,12 +7,14 @@ type SearchBarProps = {
   setMapScrollable: React.Dispatch<React.SetStateAction<boolean>>;
   selectedItem: UnivesalSeleceted;
   setSelectedItem: React.Dispatch<React.SetStateAction<UnivesalSeleceted>>;
+  goToLocation: (lat: number, lng: number) => void;
 };
 
 export default function SearchBar({
   setMapScrollable,
   selectedItem,
   setSelectedItem,
+  goToLocation,
 }: SearchBarProps) {
   const [search, setSearch] = useState('');
   const [showAutoComplete, setShowAutoComplete] = useState(false);
@@ -71,6 +73,7 @@ export default function SearchBar({
           search={search}
           setSelectedItem={setSelectedItem}
           setSearch={setSearch}
+          goToLocation={goToLocation}
         />
       )}
     </View>

@@ -31,6 +31,17 @@ export default function MapScreen() {
       });
     }
   };
+  const goToMarker = (lat: number, lng: number) => {
+    console.log('a');
+    if (mapRef.current) {
+      mapRef.current.animateToRegion({
+        latitude: lat,
+        longitude: lng,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+    }
+  };
 
   return (
     <View>
@@ -39,6 +50,7 @@ export default function MapScreen() {
           setMapScrollable={setMapScrollable}
           selectedItem={selectedItem}
           setSelectedItem={setSelectedItem}
+          goToLocation={goToMarker}
         />
       </View>
 
