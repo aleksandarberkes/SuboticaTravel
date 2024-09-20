@@ -1,8 +1,24 @@
-import {Image, StyleSheet, TouchableOpacity, Animated} from 'react-native';
-import React, {useRef, useState} from 'react';
+import {
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {OptionPickerNavigationProps} from '../assets/types';
+import GetLocation from 'react-native-get-location';
 
-export default function OptionPicker() {
+type OptionPickerProps = {
+  setLocation: React.Dispatch<React.SetStateAction<number[]>>;
+};
+
+export default function OptionPicker({setLocation}: OptionPickerProps) {
+  const navigation = useNavigation<OptionPickerNavigationProps>();
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [permissionGranded, setPermissionGranted] = useState(false);
   const marginTopOne = useRef(new Animated.Value(45)).current;
   const marginTopTwo = useRef(new Animated.Value(45)).current;
   const marginTopThree = useRef(new Animated.Value(45)).current;
@@ -51,6 +67,55 @@ export default function OptionPicker() {
     else setPickerOpen(false);
   };
 
+  const handleLocationPress = () => {};
+
+  useEffect(() => {
+    const permission = async () => {
+      if (Platform.OS === 'android') {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            {
+              title: 'Subotica Travel needs acces to you locatoin',
+              message:
+                'To allow us to help you find the most optimal routes ' +
+                'we need acces to your current location.',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log(
+              'PermissionsAndroid (permission result) = Locatoin permission granted',
+            );
+            GetLocation.getCurrentPosition({
+              enableHighAccuracy: true,
+              timeout: 60000,
+            })
+              .then(location => {
+                setLocation([location.latitude, location.longitude]);
+                console.log(location);
+              })
+              .catch(error => {
+                const {code, message} = error;
+                console.warn(code, message);
+              });
+          } else {
+            console.log(
+              'PermissionsAndroid (permission result) = Locatoin permission granted denied',
+            );
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+    };
+
+    permission();
+  }, []);
+
+  //TODO: should add view for when the permission is not granted
   return (
     <>
       <Animated.View
@@ -74,7 +139,11 @@ export default function OptionPicker() {
           styles.pickerOption,
           {transform: [{translateY: marginTopOne}]},
         ]}>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => {
+            navigation.navigate('Settings');
+          }}>
           <Image
             source={require('../assets/images/setting.png')}
             style={styles.smallIcon}
@@ -86,7 +155,11 @@ export default function OptionPicker() {
           styles.pickerOption,
           {transform: [{translateY: marginTopTwo}]},
         ]}>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => {
+            navigation.navigate('Info');
+          }}>
           <Image
             source={require('../assets/images/info.png')}
             style={styles.smallIcon}
@@ -110,7 +183,11 @@ export default function OptionPicker() {
           styles.pickerOption,
           {transform: [{translateY: marginTopFour}]},
         ]}>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => {
+            handleLocationPress();
+          }}>
           <Image
             source={require('../assets/images/navigation.png')}
             style={styles.smallIcon}

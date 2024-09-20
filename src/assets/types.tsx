@@ -1,3 +1,5 @@
+import {NativeStackNavigationProp} from 'react-native-screens/lib/typescript/native-stack/types';
+
 export type MarkerType = {
   type: string;
   properties: {
@@ -33,3 +35,13 @@ export type UnivesalSeleceted = {
   lane_info?: LaneType[];
   marker_info?: MarkerType;
 };
+
+export type RootStackParamList = {
+  Map: undefined;
+  Settings: undefined;
+  Info: undefined;
+};
+export type OptionPickerNavigationProps = NativeStackNavigationProp<
+  RootStackParamList,
+  'Settings' | 'Info'
+>;

@@ -11,6 +11,7 @@ type MapProps = {
   mapScrollable: boolean;
   selectedItem: UnivesalSeleceted;
   setSelectedItem: React.Dispatch<React.SetStateAction<UnivesalSeleceted>>;
+  location: number[];
 };
 
 export default function Map({
@@ -18,6 +19,7 @@ export default function Map({
   mapScrollable,
   selectedItem,
   setSelectedItem,
+  location,
 }: MapProps) {
   //geting the particular lanes color
   const getLaneColor = (lane: string) => {
@@ -165,6 +167,20 @@ export default function Map({
     );
   };
 
+  const renderUserLocation = () => {
+    return (
+      <Marker
+        pinColor={'green'}
+        key={0}
+        coordinate={{
+          latitude: location[0],
+          longitude: location[1],
+        }}
+        title={'User'}
+      />
+    );
+  };
+
   return (
     <MapView
       style={styles.map}
@@ -177,6 +193,7 @@ export default function Map({
       }}
       scrollEnabled={mapScrollable}>
       {renderLanes()}
+      {location && renderUserLocation()}
     </MapView>
   );
 }
