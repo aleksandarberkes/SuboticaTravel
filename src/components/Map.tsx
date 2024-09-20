@@ -1,5 +1,5 @@
 import {View, Text, StyleSheet, BackHandler} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import MapView, {Marker, Polyline} from 'react-native-maps';
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
 import mapStyle from '../assets/mapStyle.json';
@@ -12,6 +12,7 @@ type MapProps = {
   selectedItem: UnivesalSeleceted;
   setSelectedItem: React.Dispatch<React.SetStateAction<UnivesalSeleceted>>;
   location: number[];
+  mapRef: React.RefObject<MapView>;
 };
 
 export default function Map({
@@ -20,6 +21,7 @@ export default function Map({
   selectedItem,
   setSelectedItem,
   location,
+  mapRef,
 }: MapProps) {
   //geting the particular lanes color
   const getLaneColor = (lane: string) => {
@@ -167,22 +169,10 @@ export default function Map({
     );
   };
 
-  const renderUserLocation = () => {
-    return (
-      <Marker
-        pinColor={'green'}
-        key={0}
-        coordinate={{
-          latitude: location[0],
-          longitude: location[1],
-        }}
-        title={'User'}
-      />
-    );
-  };
-
   return (
     <MapView
+      ref={mapRef}
+      showsUserLocation={true}
       style={styles.map}
       customMapStyle={mapStyle}
       initialRegion={{
@@ -193,7 +183,6 @@ export default function Map({
       }}
       scrollEnabled={mapScrollable}>
       {renderLanes()}
-      {location && renderUserLocation()}
     </MapView>
   );
 }

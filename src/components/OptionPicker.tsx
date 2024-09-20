@@ -13,9 +13,13 @@ import GetLocation from 'react-native-get-location';
 
 type OptionPickerProps = {
   setLocation: React.Dispatch<React.SetStateAction<number[]>>;
+  goToLocation: () => void;
 };
 
-export default function OptionPicker({setLocation}: OptionPickerProps) {
+export default function OptionPicker({
+  setLocation,
+  goToLocation,
+}: OptionPickerProps) {
   const navigation = useNavigation<OptionPickerNavigationProps>();
   const [pickerOpen, setPickerOpen] = useState(false);
   const [permissionGranded, setPermissionGranted] = useState(false);
@@ -67,7 +71,9 @@ export default function OptionPicker({setLocation}: OptionPickerProps) {
     else setPickerOpen(false);
   };
 
-  const handleLocationPress = () => {};
+  const handleLocationPress = () => {
+    goToLocation();
+  };
 
   useEffect(() => {
     const permission = async () => {
@@ -95,7 +101,6 @@ export default function OptionPicker({setLocation}: OptionPickerProps) {
             })
               .then(location => {
                 setLocation([location.latitude, location.longitude]);
-                console.log(location);
               })
               .catch(error => {
                 const {code, message} = error;
