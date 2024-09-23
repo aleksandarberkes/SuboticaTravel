@@ -3,38 +3,12 @@ import React, {useRef, useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {UnivesalSeleceted} from '../assets/types';
 
+import {getLaneColor} from '../functions/getLaneColor';
+
 export default function MapLegend() {
   const [legendShown, setLegendShown] = useState(true);
   const legendPosition = useRef(new Animated.Value(0)).current;
 
-  const getLaneColor = (lane: string) => {
-    switch (lane) {
-      case '1A':
-        return 'gray';
-      case '2':
-        return 'darkred';
-      case '3':
-        return 'blue';
-      case '4':
-        return 'yellow';
-      case '6':
-        return 'green';
-      case '7':
-        return 'black';
-      case '8':
-        return 'burlywood';
-      case '8A':
-        return 'pink';
-      case '9':
-        return 'darkcyan';
-      case '10':
-        return 'darkslateblue';
-      case '16':
-        return 'darkgoldenrod';
-      default:
-        return 'black';
-    }
-  };
   const handleLegendPress = () => {
     if (!legendShown) {
       setLegendShown(true);

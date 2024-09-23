@@ -5,6 +5,7 @@ import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSh
 import mapStyle from '../assets/mapStyle.json';
 import {markersGeoJSON, linesGeoJSON} from '../data/data';
 import {UnivesalSeleceted, MarkerType, LaneType} from '../assets/types';
+import {getLaneColor} from '../functions/getLaneColor';
 
 type MapProps = {
   bottomSheet: React.RefObject<BottomSheet>;
@@ -24,34 +25,6 @@ export default function Map({
   mapRef,
 }: MapProps) {
   //geting the particular lanes color
-  const getLaneColor = (lane: string) => {
-    switch (lane) {
-      case '1A':
-        return 'gray';
-      case '2':
-        return 'darkred';
-      case '3':
-        return 'blue';
-      case '4':
-        return 'yellow';
-      case '6':
-        return 'green';
-      case '7':
-        return 'black';
-      case '8':
-        return 'burlywood';
-      case '8A':
-        return 'pink';
-      case '9':
-        return 'darkcyan';
-      case '10':
-        return 'darkslateblue';
-      case '16':
-        return 'darkgoldenrod';
-      default:
-        return 'black';
-    }
-  };
 
   //back button behavior when selected lane
   useEffect(() => {

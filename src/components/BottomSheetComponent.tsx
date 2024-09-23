@@ -1,4 +1,11 @@
-import {View, Text, StyleSheet, Touchable} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Touchable,
+  Dimensions,
+  Image,
+} from 'react-native';
 import React, {useMemo, useRef, useState} from 'react';
 import BottomSheet, {
   BottomSheetScrollView,
@@ -7,6 +14,7 @@ import BottomSheet, {
 import {UnivesalSeleceted} from '../assets/types';
 import stopTimes from '../data/txt/stopTimes';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {getLaneColor} from '../functions/getLaneColor';
 
 type BottomSheetComponentProps = {
   bottomSheetRef: React.RefObject<BottomSheet>;
@@ -237,12 +245,6 @@ export default function BottomSheetComponent({
 
     return (
       <View style={styles.container}>
-        <Text style={styles.headerText}>
-          {selectedItem.marker_info !== undefined
-            ? selectedItem.marker_info?.properties.stop_name
-            : selectedItem.lane_info &&
-              selectedItem.lane_info[0].properties.route_name}
-        </Text>
         {renderMarkerInfo()}
         {renderLaneInfo()}
       </View>
@@ -252,7 +254,6 @@ export default function BottomSheetComponent({
   const renderWelcome = () => {
     return (
       <View>
-        <Text style={styles.headerText}>Dobro dosli</Text>
         <Text style={[styles.displayText, {padding: 20}]}>
           Dobrodošli u Subotica Travel, vašu praktičnu aplikaciju za navigaciju
           gradskim autobuskim prevozom. Bilo da svakodnevno putujete ili ste
@@ -270,8 +271,80 @@ export default function BottomSheetComponent({
     );
   };
 
+  const handleComponent = () => {
+    const renderTitle = () => {
+      if (
+        selectedItem.marker_info === undefined &&
+        selectedItem.lane_info !== undefined
+      )
+        return (
+          <Text style={styles.bottomSheetHeaderTitle}>
+            {'Linija ' + selectedItem.lane_info[0].properties.route_name}
+          </Text>
+        );
+      else if (selectedItem.marker_info)
+        return (
+          <Text style={styles.bottomSheetHeaderTitle}>
+            {selectedItem.marker_info.properties.stop_name}
+          </Text>
+        );
+      else
+        return (
+          <Text style={styles.bottomSheetHeaderTitle}>
+            {selectedItem.selection_case.includes('none')
+              ? 'Dobro dosli'
+              : null}
+          </Text>
+        );
+    };
+
+    return (
+      <View
+        style={[
+          {
+            width: Dimensions.get('window').width - 50,
+            height: 100,
+            alignSelf: 'center',
+            borderRadius: 10,
+            top: -50,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: 20,
+            flexDirection: 'row',
+          },
+          {
+            backgroundColor: selectedItem.lane_info
+              ? getLaneColor(selectedItem.lane_info[0].properties.route_id)
+              : 'gray',
+          },
+        ]}>
+        <View>
+          {renderTitle()}
+          <Text style={styles.bottomSheetHeaderSubType}>
+            {selectedItem.selection_case.includes('lane')
+              ? 'Gradska linija'
+              : null}
+            {selectedItem.selection_case.includes('marker') ? 'Stanica' : null}
+          </Text>
+        </View>
+        <Image
+          source={
+            selectedItem.marker_info
+              ? require('../assets/images/bus-stop.png')
+              : require('../assets/images/bus.png')
+          }
+          style={styles.selectedSubTypeIcon}
+        />
+      </View>
+    );
+  };
+
   return (
-    <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
+    <BottomSheet
+      ref={bottomSheetRef}
+      snapPoints={snapPoints}
+      handleComponent={handleComponent}
+      handleIndicatorStyle={{display: 'none'}}>
       <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
         {selectedItem.selection_case === 'none'
           ? renderWelcome()
@@ -294,7 +367,6 @@ const styles = StyleSheet.create({
   },
   directionSelectionConatiner: {
     flexDirection: 'row',
-    marginTop: 20,
   },
   direcitonSelector: {
     padding: 20,
@@ -337,5 +409,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'darkgrey',
     paddingLeft: 20,
+  },
+  bottomSheetHeaderTitle: {
+    color: 'white',
+    fontWeight: '300',
+    fontSize: 30,
+  },
+  bottomSheetHeaderSubType: {
+    color: 'white',
+    fontWeight: '200',
+    fontSize: 16,
+  },
+  selectedSubTypeIcon: {
+    width: 50,
+    height: 50,
   },
 });
