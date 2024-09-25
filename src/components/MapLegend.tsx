@@ -19,7 +19,7 @@ export default function MapLegend() {
     } else {
       setLegendShown(false);
       Animated.timing(legendPosition, {
-        toValue: -110,
+        toValue: -105,
         useNativeDriver: true,
       }).start();
     }

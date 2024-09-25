@@ -5,6 +5,7 @@ import {
   Animated,
   PermissionsAndroid,
   Platform,
+  BackHandler,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -43,25 +44,25 @@ export default function OptionPicker({
         duration: animDuration,
       }),
       Animated.timing(marginTopOne, {
-        toValue: pickerOpen ? 45 : 90,
+        toValue: pickerOpen ? 35 : 90,
         useNativeDriver: true,
         delay: pickerOpen ? 0 : 120,
         duration: animDuration,
       }),
       Animated.timing(marginTopTwo, {
-        toValue: pickerOpen ? 45 : 130,
+        toValue: pickerOpen ? 35 : 140,
         useNativeDriver: true,
         delay: pickerOpen ? 40 : 80,
         duration: animDuration,
       }),
       Animated.timing(marginTopThree, {
-        toValue: pickerOpen ? 45 : 170,
+        toValue: pickerOpen ? 35 : 190,
         useNativeDriver: true,
         delay: pickerOpen ? 80 : 40,
         duration: animDuration,
       }),
       Animated.timing(marginTopFour, {
-        toValue: pickerOpen ? 45 : 210,
+        toValue: pickerOpen ? 35 : 240,
         useNativeDriver: true,
         delay: pickerOpen ? 120 : 0,
         duration: animDuration,
@@ -223,7 +224,7 @@ const styles = StyleSheet.create({
     height: 35,
     aspectRatio: 1 / 1,
     position: 'absolute',
-    right: 20,
+    right: 15,
     zIndex: -1,
     borderRadius: 50,
     borderWidth: 1,
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
     height: 30,
   },
   smallIcon: {
-    width: 15,
-    height: 15,
+    width: 17,
+    height: 17,
   },
 });

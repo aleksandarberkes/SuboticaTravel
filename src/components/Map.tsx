@@ -152,6 +152,7 @@ export default function Map({
       showsUserLocation={true}
       style={styles.map}
       customMapStyle={mapStyle}
+      minZoomLevel={11.5}
       initialRegion={{
         latitude: 46.099777,
         longitude: 19.664681,

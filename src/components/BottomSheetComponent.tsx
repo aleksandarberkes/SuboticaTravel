@@ -15,6 +15,7 @@ import {UnivesalSeleceted} from '../assets/types';
 import stopTimes from '../data/txt/stopTimes';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {getLaneColor} from '../functions/getLaneColor';
+import {getRouteIdDisplay} from '../functions/getRouteIdDisplay';
 
 type BottomSheetComponentProps = {
   bottomSheetRef: React.RefObject<BottomSheet>;
@@ -97,9 +98,13 @@ export default function BottomSheetComponent({
                   {
                     backgroundColor:
                       selectedDireciton === 'odlazak' ? 'gainsboro' : 'white',
+                    borderTopLeftRadius:
+                      selectedDireciton === 'odlazak' ? 17 : 0,
+                    borderTopRightRadius:
+                      selectedDireciton === 'odlazak' ? 17 : 0,
                   },
                 ]}>
-                <Text style={styles.displayText}>Odlazak</Text>
+                <Text style={styles.direcitonSelectorText}>Odlazak</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={1}
@@ -109,38 +114,70 @@ export default function BottomSheetComponent({
                   {
                     backgroundColor:
                       selectedDireciton === 'dolazak' ? 'gainsboro' : 'white',
+                    borderTopLeftRadius:
+                      selectedDireciton === 'dolazak' ? 17 : 0,
+                    borderTopRightRadius:
+                      selectedDireciton === 'dolazak' ? 17 : 0,
                   },
                 ]}>
-                <Text style={styles.displayText}>Dolazak</Text>
+                <Text style={styles.direcitonSelectorText}>Dolazak</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.departureTimesContainer}>
-              <Text style={styles.weekDayText}>Radni dani</Text>
-              {arivalTimesAndInfoWorkday.map((element, index) => {
-                return (
-                  <>
-                    <Text style={styles.busArivalText}>
-                      {arivalTimesAndInfoWorkday[index][0]}
-                    </Text>
-                    <Text style={styles.busTripIdText}>
-                      {arivalTimesAndInfoWorkday[index][1]}
-                    </Text>
-                  </>
-                );
-              })}
-              <Text style={styles.weekDayText}>Vikend i praznici</Text>
-              {arivalTimesAndInfoWeekend.map((element, index) => {
-                return (
-                  <>
-                    <Text style={styles.busArivalText}>
-                      {arivalTimesAndInfoWorkday[index][0]}
-                    </Text>
-                    <Text style={styles.busTripIdText}>
-                      {arivalTimesAndInfoWorkday[index][1]}
-                    </Text>
-                  </>
-                );
-              })}
+            <View>
+              <View style={styles.dayContiner}>
+                <Text style={styles.weekDayText}>Radni dani</Text>
+                {arivalTimesAndInfoWorkday.map((element, index) => {
+                  return (
+                    <View
+                      style={[
+                        styles.busArivalRowContainer,
+                        {
+                          backgroundColor:
+                            index % 2 === 0 ? 'gainsboro' : 'white',
+                        },
+                      ]}>
+                      <View style={styles.busArivalPrefixContainer}>
+                        <Text style={styles.busArivalPrefixText}>krece</Text>
+                        <Text style={styles.busArivalText}>
+                          {arivalTimesAndInfoWorkday[index][0].split(':')[0] +
+                            ':' +
+                            arivalTimesAndInfoWorkday[index][0].split(':')[1]}
+                        </Text>
+                      </View>
+                      <Text style={styles.busTripIdText} numberOfLines={1}>
+                        {getRouteIdDisplay(arivalTimesAndInfoWorkday[index][1])}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </View>
+              <View style={styles.dayContiner}>
+                <Text style={styles.weekDayText}>Vikend i praznici</Text>
+                {arivalTimesAndInfoWeekend.map((element, index) => {
+                  return (
+                    <View
+                      style={[
+                        styles.busArivalRowContainer,
+                        {
+                          backgroundColor:
+                            index % 2 === 0 ? 'gainsboro' : 'white',
+                        },
+                      ]}>
+                      <View style={styles.busArivalPrefixContainer}>
+                        <Text style={styles.busArivalPrefixText}>krece</Text>
+                        <Text style={styles.busArivalText}>
+                          {arivalTimesAndInfoWeekend[index][0].split(':')[0] +
+                            ':' +
+                            arivalTimesAndInfoWeekend[index][0].split(':')[1]}
+                        </Text>
+                      </View>
+                      <Text style={styles.busTripIdText} numberOfLines={1}>
+                        {getRouteIdDisplay(arivalTimesAndInfoWeekend[index][1])}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </View>
             </View>
           </>
         );
@@ -150,94 +187,83 @@ export default function BottomSheetComponent({
     const renderMarkerInfo = () => {
       const currentTime = new Date().toTimeString().split(' ')[0];
       const timeA = new Date(`1970-01-01T${currentTime}Z`);
-      console.log(timeA);
 
+      const displayArivals = (day: 'radni' | 'vikend') => {
+        if (selectedItem.marker_info) {
+          return selectedItem.marker_info.properties.route_ids.map(
+            (elm, index) => {
+              let counter: number = 0;
+              let dataToDisplay: string[][] = [];
+              busArivalData.forEach(arrivalItem => {
+                const timeB = new Date(`1970-01-01T${arrivalItem[1]}Z`);
+                if (
+                  arrivalItem[3] ===
+                    selectedItem.marker_info?.properties.stop_id &&
+                  arrivalItem[0]
+                    .split('_')
+                    .includes(day === 'radni' ? 'radni' : 'nedelja') &&
+                  arrivalItem[0]
+                    .split('_')
+                    .includes(
+                      selectedItem.marker_info.properties.route_ids[index],
+                    ) &&
+                  timeA.getTime() < timeB.getTime() &&
+                  counter < 5
+                ) {
+                  counter++;
+                  dataToDisplay.push([arrivalItem[1], arrivalItem[0]]);
+                }
+              });
+
+              if (dataToDisplay.length > 0) {
+                const sortFunction = (a: string[], b: string[]) => {
+                  const timeA = new Date(`1970-01-01T${a[0]}Z`);
+                  const timeB = new Date(`1970-01-01T${b[0]}Z`);
+                  return timeA.getTime() - timeB.getTime();
+                };
+                dataToDisplay.sort(sortFunction);
+                return (
+                  <View style={styles.routeContianer}>
+                    <Text style={styles.displayRouteNameText}>
+                      {'Linija ' + elm}
+                    </Text>
+                    {dataToDisplay.map((element, index) => {
+                      return (
+                        <View
+                          style={[
+                            styles.timeContiner,
+                            {
+                              backgroundColor:
+                                index % 2 === 0 ? 'gainsboro' : 'white',
+                            },
+                          ]}>
+                          <Text style={styles.busArivalText}>
+                            {element[0].split(':')[0] +
+                              ':' +
+                              element[0].split(':')[1]}
+                          </Text>
+
+                          <Text numberOfLines={1} style={styles.busTripIdText}>
+                            {element[1]}
+                          </Text>
+                        </View>
+                      );
+                    })}
+                  </View>
+                );
+              }
+              return null;
+            },
+          );
+        }
+      };
       if (selectedItem.marker_info) {
         return (
-          <View style={styles.departureTimesContainer}>
-            <Text style={styles.headerText}>Vremena za radne dane</Text>
-            {selectedItem.marker_info.properties.route_ids.map(
-              (elm, indexRoute) => {
-                let counter: number = 0;
-                return (
-                  <View style={styles.routeContianer}>
-                    <Text style={styles.displayRouteNameText}>
-                      {'Linija ' + elm}
-                    </Text>
-                    {busArivalData.map((element, index) => {
-                      const timeB = new Date(
-                        `1970-01-01T${busArivalData[index][1]}Z`,
-                      );
-                      if (
-                        busArivalData[index][3] ===
-                          selectedItem.marker_info?.properties.stop_id &&
-                        busArivalData[index][0].split('_').includes('radni') &&
-                        busArivalData[index][0]
-                          .split('_')
-                          .includes(
-                            selectedItem.marker_info.properties.route_ids[
-                              indexRoute
-                            ],
-                          ) &&
-                        timeA.getTime() < timeB.getTime() &&
-                        counter < 5
-                      ) {
-                        counter++;
-                        return (
-                          <Text style={styles.busArivalText}>
-                            {busArivalData[index][1].split(':')[0] +
-                              ':' +
-                              busArivalData[index][1].split(':')[1] +
-                              '\n'}
-                          </Text>
-                        );
-                      }
-                    })}
-                  </View>
-                );
-              },
-            )}
-            <Text style={styles.headerText}>Vremena za vikend i praznike</Text>
-            {selectedItem.marker_info.properties.route_ids.map(
-              (elm, indexRoute) => {
-                let counter: number = 0;
-                return (
-                  <View style={styles.routeContianer}>
-                    <Text style={styles.displayRouteNameText}>
-                      {'Linija ' + elm}
-                    </Text>
-                    {busArivalData.map((element, index) => {
-                      const timeB = new Date(
-                        `1970-01-01T${busArivalData[index][1]}Z`,
-                      );
-                      if (
-                        busArivalData[index][3] ===
-                          selectedItem.marker_info?.properties.stop_id &&
-                        busArivalData[index][0]
-                          .split('_')
-                          .includes('nedelja') &&
-                        busArivalData[index][0]
-                          .split('_')
-                          .includes(
-                            selectedItem.marker_info.properties.route_ids[
-                              indexRoute
-                            ],
-                          ) &&
-                        timeA.getTime() < timeB.getTime() &&
-                        counter < 5
-                      ) {
-                        counter++;
-                        return (
-                          <Text style={styles.busArivalText}>
-                            {busArivalData[index][1] + '\n'}
-                          </Text>
-                        );
-                      }
-                    })}
-                  </View>
-                );
-              },
-            )}
+          <View>
+            <Text style={styles.weekDayText}>Radni dani</Text>
+            {displayArivals('radni')}
+            <Text style={styles.weekDayText}>Vikend i praznici</Text>
+            {displayArivals('vikend')}
           </View>
         );
       }
@@ -311,6 +337,7 @@ export default function BottomSheetComponent({
             justifyContent: 'space-between',
             paddingHorizontal: 20,
             flexDirection: 'row',
+            position: 'absolute',
           },
           {
             backgroundColor: selectedItem.lane_info
@@ -342,9 +369,15 @@ export default function BottomSheetComponent({
   return (
     <BottomSheet
       ref={bottomSheetRef}
+      style={{
+        borderWidth: 1,
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderColor: 'lightgray',
+      }}
       snapPoints={snapPoints}
       handleComponent={handleComponent}
-      handleIndicatorStyle={{display: 'none'}}>
+      handleHeight={0}>
       <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
         {selectedItem.selection_case === 'none'
           ? renderWelcome()
@@ -354,42 +387,74 @@ export default function BottomSheetComponent({
   );
 }
 
+const screenWidth = Dimensions.get('screen').width;
+const screenHeight = Dimensions.get('screen').height;
+
 const styles = StyleSheet.create({
   contentContainer: {
     alignItems: 'center',
+    paddingTop: 50,
   },
   displayText: {
     color: 'black',
     alignSelf: 'center',
   },
   container: {
-    width: '80%',
+    width: screenWidth - 50,
   },
   directionSelectionConatiner: {
     flexDirection: 'row',
+    marginTop: 20,
   },
   direcitonSelector: {
-    padding: 20,
-    width: 157,
+    width: screenWidth / 2 - 25,
+    paddingVertical: 7,
   },
-  departureTimesContainer: {
-    width: '100%',
-    marginBottom: 40,
+  direcitonSelectorText: {
+    color: 'darkslategrey',
+    alignSelf: 'center',
+    textTransform: 'uppercase',
+    fontSize: 16,
+    fontWeight: '300',
+  },
+  dayContiner: {
     backgroundColor: 'gainsboro',
-    padding: 10,
+    marginBottom: 40,
   },
   weekDayText: {
-    fontSize: 22,
-    paddingTop: 10,
+    fontSize: 26,
+    paddingVertical: 10,
     paddingLeft: 10,
-    fontWeight: '700',
+    fontWeight: '300',
+    alignSelf: 'center',
+  },
+  busArivalPrefixContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: 5,
+  },
+  busArivalRowContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    gap: 5,
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+  },
+  busArivalPrefixText: {
+    fontSize: 13,
+    fontWeight: '400',
+    marginBottom: 3,
   },
   busArivalText: {
     paddingTop: 10,
-    fontSize: 20,
+    fontWeight: '300',
+    fontSize: 26,
   },
   busTripIdText: {
     fontSize: 12,
+    marginBottom: 3,
+    width: 250,
   },
   headerText: {
     fontSize: 20,
@@ -397,18 +462,23 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
   },
-  displayRouteNameText: {
-    fontSize: 22,
-    color: 'darkslategrey',
-  },
   routeContianer: {
-    backgroundColor: 'lightgray',
-    marginVertical: 10,
-    paddingVertical: 10,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'darkgrey',
-    paddingLeft: 20,
+    //route continer
+    marginVertical: 20,
+  },
+  displayRouteNameText: {
+    //route name
+    fontSize: 28,
+    color: 'darkslategrey',
+    fontWeight: '300',
+  },
+  timeContiner: {
+    // one time contianer
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    paddingBottom: 10,
+    paddingHorizontal: 10,
   },
   bottomSheetHeaderTitle: {
     color: 'white',

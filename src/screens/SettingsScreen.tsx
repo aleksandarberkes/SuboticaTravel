@@ -1,7 +1,14 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {BackHandler, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect} from 'react';
 
 export default function SettingsScreen() {
+  useEffect(() => {
+    console.log('a');
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return false;
+    });
+  }, []);
+
   return (
     <View>
       <Text>SettingsScreen</Text>
