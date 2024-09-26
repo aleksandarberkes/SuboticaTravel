@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   pickerOption: {
     backgroundColor: 'white',
-    height: 35,
+    height: 45,
     aspectRatio: 1 / 1,
     position: 'absolute',
     right: 15,

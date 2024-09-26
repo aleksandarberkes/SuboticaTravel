@@ -1,27 +1,27 @@
 export const getLaneColor = (lane: string) => {
   switch (lane) {
     case '1A':
-      return 'gray';
+      return '#db117b';
     case '2':
-      return 'darkred';
+      return '#b7afd4';
     case '3':
-      return 'blue';
+      return '#984379';
     case '4':
-      return 'yellow';
+      return '#c5c302';
     case '6':
-      return 'green';
+      return '#dc241b';
     case '7':
-      return 'black';
+      return '#722100';
     case '8':
-      return 'burlywood';
+      return '#0094e7';
     case '8A':
-      return 'pink';
+      return '#ff721f';
     case '9':
-      return 'darkcyan';
+      return '#ef98a0';
     case '10':
-      return 'darkslateblue';
+      return '#068c39';
     case '16':
-      return 'darkgoldenrod';
+      return '#26136b';
     default:
       return 'black';
   }

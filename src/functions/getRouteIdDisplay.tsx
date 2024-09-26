@@ -90,6 +90,85 @@ export const getRouteIdDisplay = (routeId: string): string => {
       return '';
     case 'Linija_3_Smer_B_Od_Radio_Subotica_Raspust_nedelja_i_praznici':
       return 'od Radio Subotice';
+
+    case 'Linija_4_Smer_A_radni_dan':
+      return '';
+    case 'Linija_4_Smer_A_Do_Subotica_-_Trans_radni_dan':
+      return 'do Garaze';
+    case 'Linija_4_Smer_B_radni_dan':
+      return '';
+    case 'Linija_4_Smer_B_radni_dan_djacki':
+      return 'Djacki';
+
+    case 'Linija_6_Smer_A_radni_dan':
+      return '';
+    case 'Linija_6_Smer_A_Od_Subotica_-_Trans_radni_dan':
+      return 'od Garaze';
+    case 'Linija_6_Smer_A_Od_Calzedonia_radni_dan':
+      return 'od Calzedonie (Gordona)';
+    case 'Linija_6_Smer_A_Do_Subotica_-_Trans_radni_dan':
+      return 'do Garaze';
+
+    case 'Linija_6_Smer_B_radni_dan':
+      return '';
+    case 'Linija_6_Smer_B_Od_Subotica_-_Trans_radni_dan':
+      return 'od Garaze';
+    case 'Linija_6_Smer_B_Do_Calzedonia_radni_dan':
+      return 'do Calzedonie (Gordona)';
+    case 'Linija_6_Smer_B_Do_Subotica_-_Trans_radni_dan':
+      return 'do Garaze';
+
+    case 'Linija_6_Smer_A_nedelja_i_praznici':
+      return '';
+    case 'Linija_6_Smer_A_Od_Subotica_-_Trans_nedelja_i_praznici':
+      return 'od Garaze';
+    case 'Linija_6_Smer_A_Do_Subotica_-_Trans_nedelja_i_praznici':
+      return 'do Garaze';
+
+    case 'Linija_6_Smer_B_nedelja_i_praznici':
+      return '';
+    case 'Linija_6_Smer_B_Od_Subotica_-_Trans_nedelja_i_praznici':
+      return 'od Garaze';
+    case 'Linija_6_Smer_B_Do_Subotica_-_Trans_nedelja_i_praznici':
+      return 'do Garaze';
+
+    case 'Linija_7_Smer_B_subota':
+      return '';
+    case 'Linija_7_Smer_A_nedelja_i_praznici':
+      return '';
+    case 'Linija_7_Smer_B_nedelja_i_praznici':
+      return '';
+
+    case 'Linija_8_Smer_A_radni_dan':
+      return '';
+    case 'Linija_8_Smer_B_radni_dan':
+      return '';
+    case 'Linija_8_Smer_B_radni_dan_Tatra':
+      return 'od Tatravagonke';
+
+    case 'Linija_8A_Smer_A_radni_dan':
+      return '';
+    case 'Linija_8A_Smer_B_radni_dan':
+      return '';
+
+    case 'Linija_9_Smer_A_radni_dan':
+      return '';
+    case 'Linija_9_Smer_B_radni_dan':
+      return '';
+
+    case 'Linija_10_Smer_A_radni_dan':
+      return '';
+    case 'Linija_10_Smer_B_radni_dan':
+      return '';
+
+    case 'Linija_16_Smer_A_radni_dan':
+      return '';
+    case 'Linija_16_Smer_B_radni_dan':
+      return '';
+    case 'Linija_16_Smer_A_nedelja_i_praznici':
+      return '';
+    case 'Linija_16_Smer_B_nedelja_i_praznici':
+      return '';
     default:
       return routeId;
   }

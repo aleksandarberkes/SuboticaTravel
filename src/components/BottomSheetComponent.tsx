@@ -244,7 +244,7 @@ export default function BottomSheetComponent({
                           </Text>
 
                           <Text numberOfLines={1} style={styles.busTripIdText}>
-                            {element[1]}
+                            {getRouteIdDisplay(element[1])}
                           </Text>
                         </View>
                       );
