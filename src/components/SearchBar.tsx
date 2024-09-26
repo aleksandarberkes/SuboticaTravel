@@ -1,7 +1,18 @@
-import {View, Text, StyleSheet, TextInput, BackHandler} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  BackHandler,
+  Image,
+  Touchable,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SearchFilter from './SearchFilter';
 import {MarkerType, LaneType, UnivesalSeleceted} from '../assets/types';
+import {markersGeoJSON} from '../data/data';
+import {getMarkerLanes} from '../functions/getMarkerLanes';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 type SearchBarProps = {
   setMapScrollable: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,6 +29,7 @@ export default function SearchBar({
 }: SearchBarProps) {
   const [search, setSearch] = useState('');
   const [showAutoComplete, setShowAutoComplete] = useState(false);
+  const [showClear, setShowClear] = useState(false);
 
   useEffect(() => {
     const onBackPress = () => {
@@ -40,8 +52,34 @@ export default function SearchBar({
     if (selectedItem.selection_case === 'none') setSearch('');
   }, [selectedItem]);
 
+  const handleSubmit = (text: string) => {
+    markersGeoJSON.features.forEach(element => {
+      if (text === element.properties.stop_name) {
+        setSelectedItem({
+          selection_case: 'filter-marker',
+          lane_info: getMarkerLanes(element),
+          marker_info: element,
+        });
+        goToLocation(
+          element.geometry.coordinates[1],
+          element.geometry.coordinates[0],
+        );
+      }
+    });
+  };
+
   return (
     <View style={styles.searchBar}>
+      <Image
+        source={require('../assets/images/search.png')}
+        style={[
+          styles.searchIcon,
+          {
+            marginLeft: 10,
+            marginRight: 5,
+          },
+        ]}
+      />
       <TextInput
         style={styles.input}
         placeholder="Trazite stanice i linije"
@@ -51,9 +89,11 @@ export default function SearchBar({
           if (text === '') {
             setMapScrollable(true);
             setShowAutoComplete(false);
+            setShowClear(false);
           } else {
             setMapScrollable(false);
             setShowAutoComplete(true);
+            setShowClear(true);
           }
 
           setSearch(text);
@@ -67,7 +107,29 @@ export default function SearchBar({
           setMapScrollable(true);
           setShowAutoComplete(false);
         }}
+        onSubmitEditing={() => {
+          handleSubmit(search);
+        }}
       />
+      {showClear && (
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            setSearch('');
+            setShowClear(false);
+          }}>
+          <Image
+            source={require('../assets/images/cancel.png')}
+            style={[
+              styles.searchIcon,
+              {
+                marginLeft: 5,
+                marginRight: 10,
+              },
+            ]}
+          />
+        </TouchableOpacity>
+      )}
       {showAutoComplete && (
         <SearchFilter
           search={search}
@@ -85,11 +147,12 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 50,
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 15,
     borderWidth: 1,
     borderColor: 'lightgray',
     flexDirection: 'row',
     position: 'relative',
+    alignItems: 'center',
   },
   searchAutoComplete: {
     backgroundColor: 'red',
@@ -98,9 +161,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 50,
   },
-  searchIcon: {},
+  searchIcon: {
+    height: 25,
+    width: 25,
+  },
   input: {
     flex: 1,
     color: 'gray',
+    borderRadius: 30,
   },
 });

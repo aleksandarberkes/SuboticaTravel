@@ -4,6 +4,7 @@ import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import {markersGeoJSON, linesGeoJSON} from '../data/data';
 import {TouchableOpacity} from '@gorhom/bottom-sheet';
 import {MarkerType, LaneType, UnivesalSeleceted} from '../assets/types';
+import {getMarkerLanes} from '../functions/getMarkerLanes';
 
 type SearchFilterProps = {
   search: string;
@@ -13,18 +14,8 @@ type SearchFilterProps = {
 };
 
 export default function SearchFilter(props: SearchFilterProps) {
-  const getMarkerLanes = (marker: MarkerType): LaneType[] => {
-    let lanesArry: LaneType[] = [];
-    linesGeoJSON.features.forEach(value => {
-      if (marker.properties.route_ids.includes(value.properties.route_id)) {
-        lanesArry.push(value);
-      }
-    });
-    return lanesArry;
-  };
-
   const handleMarkerPress = (feature: MarkerType) => {
-    getMarkerLanes(feature);
+    getMarkerLanes(feature); // what is this
     props.setSelectedItem({
       selection_case: 'filter-marker',
       lane_info: getMarkerLanes(feature),

@@ -132,7 +132,7 @@ export default function Map({
                   longitude: coord[0],
                 }))}
                 strokeColor={getLaneColor(feature.properties.route_name)}
-                strokeWidth={5}
+                strokeWidth={7}
                 onPress={() => handleLanePress(feature)}
               />
               {renderMarkers(feature)}

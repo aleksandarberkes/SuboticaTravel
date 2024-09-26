@@ -24,10 +24,10 @@ export default function OptionPicker({
   const navigation = useNavigation<OptionPickerNavigationProps>();
   const [pickerOpen, setPickerOpen] = useState(false);
   const [permissionGranded, setPermissionGranted] = useState(false);
-  const marginTopOne = useRef(new Animated.Value(45)).current;
-  const marginTopTwo = useRef(new Animated.Value(45)).current;
-  const marginTopThree = useRef(new Animated.Value(45)).current;
-  const marginTopFour = useRef(new Animated.Value(45)).current;
+  const marginTopOne = useRef(new Animated.Value(35)).current;
+  const marginTopTwo = useRef(new Animated.Value(35)).current;
+  const marginTopThree = useRef(new Animated.Value(35)).current;
+  const marginTopFour = useRef(new Animated.Value(35)).current;
   const rotatePicker = useRef(new Animated.Value(0)).current;
 
   const rotateInterpolation = rotatePicker.interpolate({

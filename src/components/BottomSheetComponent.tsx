@@ -342,7 +342,7 @@ export default function BottomSheetComponent({
           {
             backgroundColor: selectedItem.lane_info
               ? getLaneColor(selectedItem.lane_info[0].properties.route_id)
-              : 'gray',
+              : '#427e4c',
           },
         ]}>
         <View>
